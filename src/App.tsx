@@ -7,7 +7,7 @@ const App: FunctionComponent = withPoker99Network(() => {
   const network = usePoker99()
   return (
     <GamePagesSlider gameAppState={network.gameAppState} fullPage={[false, false, true]}>
-      <Home {...network} gameName='Poker100'/>
+      <Home {...network} gameName='Poker99'/>
       <Room {...network} />
       <Game/>
     </GamePagesSlider>
