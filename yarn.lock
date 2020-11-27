@@ -5339,15 +5339,15 @@ functional-red-black-tree@^1.0.1:
   resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
 
-gamenet-material@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/gamenet-material/-/gamenet-material-0.2.2.tgz#4dbb4078e3ddc7c663fb7e1aad94d8ae1edde888"
-  integrity sha512-ZjrvPyaB4BfFeTNiGjMjh2sk5coRunz+2rXaV991U+Fq3ylwcUrxMY++LRGH9Fu5nzWIdv/+9lvNeTbRpQU7Iw==
+gamenet-material@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/gamenet-material/-/gamenet-material-0.2.5.tgz#1b4f8fec0b268da6ac6dae7e8301de2e9fb4d206"
+  integrity sha512-MoPGUZx1nJQ/mwjqwJ1GVIEFSdZW/p5bHxce8nlkoyqMCBY212LSoc8IRhbfR+XzPtQAWz8E0oZpNiygHmEcBg==
 
-gamenet@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/gamenet/-/gamenet-0.2.4.tgz#2cd4388da58759f42b15532d4e38e3acb962c393"
-  integrity sha512-KiCpGYLuaPmHcLYvh4opBSNfvc4To60pgS+7MFO+wrf1PSswbOSQHFdpM+C/zXIcgzOR22yKdAhDAmGhKRsHZw==
+gamenet@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/gamenet/-/gamenet-0.2.5.tgz#78d926a21630ca8a9429687a82705a00f2fbad16"
+  integrity sha512-uMfeydSBZ3yXfQs/pFfSOFYsUa4tywlYPsMgVY+Y9uDk33Le+DBowx69nvin8RPGgEEzlS0cRnSbDRkIduLQdg==
   dependencies:
     clone-deep "^4.0.1"
     smnet "^0.2.3"
