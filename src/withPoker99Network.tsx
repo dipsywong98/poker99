@@ -13,8 +13,8 @@ export const withPoker99Network = (Component: FunctionComponent): FunctionCompon
     return (
       <Poker99Context.Provider value={network}>
         <Component {...props} />
-      </Poker99Context.Provider>
-    )
+    </Poker99Context.Provider>
+  )
   }
   WithGameNetwork.displayName = 'WithGameNetwork'
   return WithGameNetwork

@@ -1,11 +1,17 @@
-import React from 'react';
-import './App.css';
-import { GameApp } from './demo-gamenet/poker99/GameApp'
+import React, { FunctionComponent } from 'react'
+import { usePoker99, withPoker99Network } from './withPoker99Network'
+import { GamePagesSlider, Home, Room } from 'gamenet-material'
+import { Game } from './Game'
 
-function App() {
+const App: FunctionComponent = withPoker99Network(() => {
+  const network = usePoker99()
   return (
-    <GameApp />
-  );
-}
+    <GamePagesSlider gameAppState={network.gameAppState} fullPage={[false, false, true]}>
+      <Home {...network} />
+      <Room {...network} />
+      <Game/>
+    </GamePagesSlider>
+  )
+})
 
-export default App;
+export default App

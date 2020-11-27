@@ -1,10 +1,11 @@
+// Poker99Action.ts
+
 import { GameActionTypes, GenericBoardGameAction } from 'gamenet'
 import { Card } from './types'
 import { NetworkAction } from 'smnet'
 
 export enum Poker99ActionType {
   PLAY_CARD,
-  LOCAL_MOVE,
   END,
 }
 

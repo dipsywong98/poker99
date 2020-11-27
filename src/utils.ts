@@ -5,9 +5,9 @@ export const minPossible = (current: number, cards: Card[]): number[] => {
   let min = Infinity
   let index = 0
   cards.forEach(({ suit, number }, k) => {
-    let next = 0
+    let next
     if (suit === Suit.SPADE && number === 1) {
-      return [0, k]
+      next = 1
     } else if (number === 10) {
       next = current - 10
     } else if (number === 12) {

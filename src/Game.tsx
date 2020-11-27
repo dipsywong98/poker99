@@ -35,6 +35,8 @@ export const Game: FunctionComponent = () => {
       await dispatch(action).then(() => setError('')).catch(handleError)
     } else if (myLocals.includes(state.players[state.turn])) {
       await dispatchAs(state.turn, action).then(() => setError('')).catch(handleError)
+    } else {
+      setError('Not my turn')
     }
   }
   const renderDeck = (playerId: number): ReactNode => state.playerDeck[playerId]?.map(card => (

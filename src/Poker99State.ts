@@ -1,3 +1,5 @@
+// Poker99State.ts
+
 import { GenericBoardGameState } from 'gamenet'
 import { Deck } from './types'
 
