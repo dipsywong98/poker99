@@ -74,10 +74,11 @@ const withPlayCard: (playerId: number, payload: PlayCardPayload) => IStateMapper
   if (prevState.turn !== playerId) {
     throw new Error('not your turn')
   }
-  return compose(
+  const nextState = compose(
     withDrawCard(playerId),
     ...[withDiscardCard, bomb, normal, pm, reverse, skip, target, spade1].map(playCard => playCard(payload, playerId))
   )(prevState)
+  return { ...nextState, lastAction: { ...payload, playerId } }
 }
 
 export const withIncrementTurn: IStateMapper = prevState => {

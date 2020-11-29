@@ -1,4 +1,4 @@
-import React, { createContext, FunctionComponent, useContext } from 'react'
+import React, { createContext, FunctionComponent, useContext, useEffect } from 'react'
 import { BoardGameContextInterface, useBoardGameNetwork } from 'gamenet'
 import { Poker99State } from './Poker99State'
 import { Poker99Reducer } from './Poker99Reducer'
@@ -9,7 +9,21 @@ const Poker99Context = createContext<BoardGameContextInterface<Poker99State, Pok
 
 export const withPoker99Network = (Component: FunctionComponent): FunctionComponent => {
   const WithGameNetwork: FunctionComponent = props => {
-    const network = useBoardGameNetwork(Poker99Reducer, new Poker99State(), aiAction)
+    const network = useBoardGameNetwork(Poker99Reducer, new Poker99State())
+    const {myAis, state,dispatchAs} = network
+    useEffect(() => {
+      if (aiAction !== undefined && myAis.includes(state.players[state.turn]) && state.started && state.winner === null) {
+        const cb = (): void => {
+          const action = aiAction(state, state.turn)
+          // action.peerId = Object.keys(state.members).filter(peerId => state.members[peerId] === state.players[state.turn])[0]
+          dispatchAs(state.turn, action).catch(console.error)
+        }
+        const n = window.setTimeout(cb, 1000)
+        return () => {
+          window.clearTimeout(n)
+        }
+      }
+    }, [dispatchAs, myAis, state])
     return (
       <Poker99Context.Provider value={network}>
         <Component {...props} />

@@ -1,5 +1,5 @@
 import { ICard, ISuit } from './types'
-import { cardPoints } from './constants'
+import { cardPoints, numberString, suitString } from './constants'
 import { isSpade1Card } from './cards/spade1'
 import { isBombCard } from './cards/bomb'
 import { isReverseCard } from './cards/reverse'
@@ -49,4 +49,8 @@ export const hintText = (card: ICard): React.ReactNode => {
   } else {
     return `+ ${card.number}`
   }
+}
+
+export const printCard = (card: ICard): string => {
+  return `${suitString[card.suit]} ${numberString[card.number]}`
 }

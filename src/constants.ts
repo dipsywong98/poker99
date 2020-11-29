@@ -46,4 +46,6 @@ export const suitColor: Record<ISuit, string> = {
   [ISuit.DIAMOND]: 'red'
 }
 
+export const playerColor = ['red', 'yellow', 'green', 'blue']
+
 export const maxCard = 5

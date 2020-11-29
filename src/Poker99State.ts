@@ -2,6 +2,7 @@
 
 import { GenericBoardGameState } from 'gamenet'
 import { IDeck } from './types'
+import { PlayCardPayload } from './Poker99Action'
 
 export class Poker99State extends GenericBoardGameState {
   maxPlayer = 4
@@ -14,4 +15,5 @@ export class Poker99State extends GenericBoardGameState {
   trashDeck: IDeck = []
   playerDeck: IDeck[] = []
   logs: string[] = []
+  lastAction?: PlayCardPayload & { playerId: number }
 }

@@ -59,7 +59,8 @@ export const Deck: FunctionComponent<{ cards: ICard[], hide: boolean, reveal: ()
     {hide && <IconButton onClick={reveal} style={{
       transform: 'translateY(-100%)',
       margin: 'auto',
-      display: 'block'
+      display: 'block',
+      pointerEvents: 'all'
     }}><Visibility/></IconButton>}
     <Grid container justify='center' spacing={2}>
       {cards.map((card, index) => (
