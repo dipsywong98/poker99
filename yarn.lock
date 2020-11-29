@@ -5344,10 +5344,10 @@ gamenet-material@^0.2.5:
   resolved "https://registry.yarnpkg.com/gamenet-material/-/gamenet-material-0.2.5.tgz#1b4f8fec0b268da6ac6dae7e8301de2e9fb4d206"
   integrity sha512-MoPGUZx1nJQ/mwjqwJ1GVIEFSdZW/p5bHxce8nlkoyqMCBY212LSoc8IRhbfR+XzPtQAWz8E0oZpNiygHmEcBg==
 
-gamenet@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/gamenet/-/gamenet-0.2.5.tgz#78d926a21630ca8a9429687a82705a00f2fbad16"
-  integrity sha512-uMfeydSBZ3yXfQs/pFfSOFYsUa4tywlYPsMgVY+Y9uDk33Le+DBowx69nvin8RPGgEEzlS0cRnSbDRkIduLQdg==
+gamenet@^0.2.7:
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/gamenet/-/gamenet-0.2.7.tgz#d927d5e24210969276c174ece0bd09dc2cc5474f"
+  integrity sha512-4VVrqi2a0riF7QXOmwRg7BN9AS3C0VgZaDaXo4dnE8ch05F3G6ho/NZm01KzyvoBz/tg36uCkyBJtW4rPM1jEw==
   dependencies:
     clone-deep "^4.0.1"
     smnet "^0.2.3"

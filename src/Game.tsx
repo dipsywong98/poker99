@@ -1,7 +1,12 @@
-import React, { FunctionComponent, ReactNode, useState } from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 import { usePoker99 } from './withPoker99Network'
-import { Card, Suit } from './types'
-import { Poker99Action, Poker99ActionType } from './Poker99Action'
+import { PlayCardPayload, Poker99Action, Poker99ActionType } from './Poker99Action'
+import { Deck } from './components/Deck'
+import { ICard, ISuit } from './types'
+import { isPmCard } from './cards/pm'
+import { PlayCardAdditionalModal } from './components/PlayCardAdditionalModal'
+import { cardPoints } from './constants'
+import { isTargetCard } from './cards/target'
 
 export const Game: FunctionComponent = () => {
   const {
@@ -18,41 +23,70 @@ export const Game: FunctionComponent = () => {
   } = usePoker99()
   const [target, setTarget] = useState(0)
   const [increment, setIncrement] = useState(true)
+  const [throttledRenderedId, setTrottledRenderedId] = useState(renderedDeckId)
   const d = state.direction === 1 ? '>' : '<'
   const handleError = (e: Error): void => {
     setError(e.message)
   }
-  const clickCard = (card: Card) => async () => {
+  const playCard = async (payload: PlayCardPayload) => {
     const action: Poker99Action = {
       type: Poker99ActionType.PLAY_CARD,
-      payload: {
-        card,
-        increase: increment,
-        target
-      }
+      payload
     }
     if (state.turn === myPlayerId) {
-      await dispatch(action).then(() => setError('')).catch(handleError)
+      await dispatch(action).then(() => setError(''))
     } else if (myLocals.includes(state.players[state.turn])) {
-      await dispatchAs(state.turn, action).then(() => setError('')).catch(handleError)
+      await dispatchAs(state.turn, action).then(() => setError(''))
     } else {
       setError('Not my turn')
     }
+    if (myLocals.length > 0) {
+      setHideDeck(true)
+    }
   }
-  const renderDeck = (playerId: number): ReactNode => state.playerDeck[playerId]?.map(card => (
-    <button key={card.number * 10 + card.suit} onClick={clickCard(card)}>
-      {Suit[card.suit]} {card.number}
-    </button>
-  ))
-  const renderLocalDeck = (): ReactNode => {
-    return hideDeck ? <button onClick={() => setHideDeck(false)}>show {state.players[renderedDeckId]}</button>
-      : renderDeck(renderedDeckId)
-  }
+  useEffect(() => {
+    setTimeout(() => {
+      setTrottledRenderedId(renderedDeckId)
+    }, 500)
+  }, [renderedDeckId])
+  const targets: Array<[number, string]> = state.players.map((name, id) => [id, name] as [number, string]).filter(([id]) => id !== throttledRenderedId && !state.dead[id])
   const again = async (): Promise<void> => {
     await dispatch({
       type: Poker99ActionType.END
     }).catch(handleError)
   }
+  const [modalCard, setModalCard] = useState<null | ICard>(null)
+  const handleCardClick = (card: ICard) => {
+    if (isPmCard(card)) {
+      if (cardPoints[card.number] + state.points <= 99) {
+        setModalCard(card)
+      } else {
+        playCard({
+          card,
+          increase: false
+        }).catch(handleError)
+      }
+    } else if (isTargetCard(card)) {
+      if (targets.length === 1) {
+        playCard({
+          card,
+          target: targets[0][0]
+        }).catch(handleError)
+      } else {
+        setModalCard(card)
+      }
+    } else {
+      playCard({ card }).catch(handleError)
+    }
+  }
+
+  const handleModalClose = (payload?: PlayCardPayload) => {
+    if (payload !== undefined) {
+      playCard(payload).catch(handleError)
+    }
+    setModalCard(null)
+  }
+
   return (
     <div style={{ pointerEvents: 'all' }}>
       <div>
@@ -74,11 +108,13 @@ export const Game: FunctionComponent = () => {
         </span>
         ))}
         <div>
-          {
-            myLocals.length === 0
-              ? renderDeck(myPlayerId)
-              : renderLocalDeck()
-          }
+          {state.started &&
+          <Deck
+            cards={state.playerDeck[throttledRenderedId ?? myPlayerId]}
+            onCardClick={handleCardClick}
+            hide={hideDeck}
+            reveal={() => setHideDeck(false)}
+          />}
         </div>
         <div>
           target: {target}
@@ -90,6 +126,12 @@ export const Game: FunctionComponent = () => {
       <div>
         {state.logs.slice().reverse().map((s, k) => <div key={k}>{s}</div>)}
       </div>
+      <PlayCardAdditionalModal
+        open={modalCard !== null}
+        card={modalCard ?? { suit: ISuit.SPADE, number: 0 }}
+        onClose={handleModalClose}
+        targets={targets}
+      />
     </div>
   )
 }

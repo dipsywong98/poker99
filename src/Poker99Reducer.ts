@@ -1,7 +1,7 @@
 import { NetworkReducer } from 'smnet'
 import { Poker99State } from './Poker99State'
 import { PlayCardPayload, Poker99Action, Poker99ActionType } from './Poker99Action'
-import { Deck, PlayCard, StateMapper, Suit } from './types'
+import { IDeck, IPlayCard, IStateMapper, ISuit } from './types'
 import { compose, GameActionTypes, shuffle } from 'gamenet'
 import { maxCard } from './constants'
 import { minPossible } from './utils'
@@ -13,8 +13,8 @@ import { skip } from './cards/skip'
 import { target } from './cards/target'
 import { spade1 } from './cards/spade1'
 
-const getFullDeck = (): Deck => {
-  const deck: Deck = []
+const getFullDeck = (): IDeck => {
+  const deck: IDeck = []
   for (let suit = 0; suit < 4; suit++) {
     for (let number = 1; number <= 13; number++) {
       deck.push({ suit, number })
@@ -23,7 +23,7 @@ const getFullDeck = (): Deck => {
   return deck
 }
 
-const withDrawCard: (playerId: number) => StateMapper = playerId => prevState => {
+const withDrawCard: (playerId: number) => IStateMapper = playerId => prevState => {
   if (prevState.playerDeck[playerId].length >= maxCard) {
     throw new Error(`cannot draw, ${prevState.players[playerId]} already has ${maxCard} cards`)
   }
@@ -36,7 +36,7 @@ const withDrawCard: (playerId: number) => StateMapper = playerId => prevState =>
   }
 }
 
-const withInitGame: StateMapper = (prevState: Poker99State) => {
+const withInitGame: IStateMapper = (prevState: Poker99State) => {
   prevState = {
     ...prevState,
     drawDeck: [],
@@ -59,15 +59,15 @@ const withInitGame: StateMapper = (prevState: Poker99State) => {
   return { ...prevState }
 }
 
-const withDiscardCard: PlayCard = ({ card }, playerId) => state => {
+const withDiscardCard: IPlayCard = ({ card }, playerId) => state => {
   state.trashDeck.push(card)
   state.playerDeck[playerId] = state.playerDeck[playerId].filter(({ suit, number }) => !(suit === card.suit && number === card.number))
   return state
 }
 
-const withPlayCard: (playerId: number, payload: PlayCardPayload) => StateMapper = (playerId, payload) => prevState => {
+const withPlayCard: (playerId: number, payload: PlayCardPayload) => IStateMapper = (playerId, payload) => prevState => {
   const { card } = payload
-  const cardStr = `${Suit[card.suit]}${card.number}`
+  const cardStr = `${ISuit[card.suit]}${card.number}`
   if (prevState.playerDeck[playerId].find(({ suit, number }) => suit === card.suit && number === card.number) === undefined) {
     throw new Error(`${prevState.players[playerId]} doesnt own card ${cardStr}`)
   }
@@ -80,15 +80,15 @@ const withPlayCard: (playerId: number, payload: PlayCardPayload) => StateMapper 
   )(prevState)
 }
 
-export const withIncrementTurn: StateMapper = prevState => {
+export const withIncrementTurn: IStateMapper = prevState => {
   const nextPlayerId = (prevState.turn + prevState.maxPlayer + prevState.direction) % prevState.maxPlayer
   return { ...prevState, turn: nextPlayerId }
 }
 
-export const withEndTurn: StateMapper = prevState => {
+export const withEndTurn: IStateMapper = prevState => {
   if (!prevState.dead[prevState.turn] && minPossible(prevState.points, prevState.playerDeck[prevState.turn])[0] > 99) {
     prevState.logs.push(`${prevState.players[prevState.turn]} die, his card: ${prevState.playerDeck[prevState.turn].map(card => (
-      `${Suit[card.suit]}${card.number}`)
+      `${ISuit[card.suit]}${card.number}`)
     ).join(',')}`)
     prevState.dead[prevState.turn] = true
   }

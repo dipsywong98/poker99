@@ -1,7 +1,7 @@
 // Poker99Action.ts
 
 import { GameActionTypes, GenericBoardGameAction } from 'gamenet'
-import { Card } from './types'
+import { ICard } from './types'
 import { NetworkAction } from 'smnet'
 
 export enum Poker99ActionType {
@@ -10,7 +10,7 @@ export enum Poker99ActionType {
 }
 
 export interface PlayCardPayload {
-  card: Card
+  card: ICard
   increase?: boolean
   target?: number
 }

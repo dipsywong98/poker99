@@ -1,22 +1,22 @@
 import { Poker99State } from './Poker99State'
 import { PlayCardPayload } from './Poker99Action'
 
-export enum Suit {
+export enum ISuit {
   SPADE,
   HEART,
   CLUB,
   DIAMOND
 }
 
-export interface Card {
-  suit: Suit
+export interface ICard {
+  suit: ISuit
   number: number
 }
 
-export type Deck = Card[]
+export type IDeck = ICard[]
 
-export type StateMapper = (prevState: Poker99State) => Poker99State
+export type IStateMapper = (prevState: Poker99State) => Poker99State
 
-export type IsCard = (card: Card) => boolean
+export type IsCard = (card: ICard) => boolean
 
-export type PlayCard = (payload: PlayCardPayload, playerId: number) => StateMapper
+export type IPlayCard = (payload: PlayCardPayload, playerId: number) => IStateMapper

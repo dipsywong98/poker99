@@ -1,11 +1,11 @@
-import { Card, IsCard, PlayCard } from '../types'
+import { ICard, IPlayCard, IsCard } from '../types'
 import { withEndTurn } from '../Poker99Reducer'
 
-export const isTargetCard: IsCard = (card: Card): boolean => {
+export const isTargetCard: IsCard = (card: ICard): boolean => {
   return card.number === 5
 }
 
-export const target: PlayCard = ({ card, target }, playerId) => state => {
+export const target: IPlayCard = ({ card, target }, playerId) => state => {
   if (isTargetCard(card)) {
     if (target === undefined) {
       throw new Error('target is required in payload')

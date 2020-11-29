@@ -1,7 +1,7 @@
 // Poker99State.ts
 
 import { GenericBoardGameState } from 'gamenet'
-import { Deck } from './types'
+import { IDeck } from './types'
 
 export class Poker99State extends GenericBoardGameState {
   maxPlayer = 4
@@ -10,8 +10,8 @@ export class Poker99State extends GenericBoardGameState {
   direction = 1
   points = 0
   dead: Record<number, true> = {}
-  drawDeck: Deck = []
-  trashDeck: Deck = []
-  playerDeck: Deck[] = []
+  drawDeck: IDeck = []
+  trashDeck: IDeck = []
+  playerDeck: IDeck[] = []
   logs: string[] = []
 }

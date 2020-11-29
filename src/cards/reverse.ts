@@ -1,11 +1,11 @@
-import { Card, IsCard, PlayCard } from '../types'
+import { ICard, IPlayCard, IsCard } from '../types'
 import { withEndTurn, withIncrementTurn } from '../Poker99Reducer'
 
-export const isReverseCard: IsCard = (card: Card): boolean => {
+export const isReverseCard: IsCard = (card: ICard): boolean => {
   return card.number === 4
 }
 
-export const reverse: PlayCard = ({ card }) => state => {
+export const reverse: IPlayCard = ({ card }) => state => {
   if (isReverseCard(card)) {
     state.direction *= -1
     return withEndTurn(withIncrementTurn(state))
