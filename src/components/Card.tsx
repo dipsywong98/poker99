@@ -13,13 +13,14 @@ const useStyle = makeStyles(() => ({
     cursor: 'pointer',
     userSelect: 'none',
     transition: 'transform 0.1s ease-in-out',
+    transformOrigin: 'center',
     '&:hover': {
       transform: 'translateY(-50%)'
     }
   }
 }))
 
-export const Card: FunctionComponent<{ card: ICard, onClick: () => void, disabled?: boolean }> = ({ card, card: { suit, number }, onClick, disabled }) => {
+export const Card: FunctionComponent<{ card: ICard, onClick?: () => void, disabled?: boolean }> = ({ card, card: { suit, number }, onClick, disabled }) => {
   const classes = useStyle()
 
   return (

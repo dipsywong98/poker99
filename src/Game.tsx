@@ -7,6 +7,7 @@ import { isPmCard } from './cards/pm'
 import { PlayCardAdditionalModal } from './components/PlayCardAdditionalModal'
 import { cardPoints } from './constants'
 import { isTargetCard } from './cards/target'
+import { usePromise } from './usePromise'
 
 export const Game: FunctionComponent = () => {
   const {
@@ -38,7 +39,7 @@ export const Game: FunctionComponent = () => {
     } else if (myLocals.includes(state.players[state.turn])) {
       await dispatchAs(state.turn, action).then(() => setError(''))
     } else {
-      setError('Not my turn')
+      throw new Error('Not my turn')
     }
     if (myLocals.length > 0) {
       setHideDeck(true)
@@ -56,33 +57,43 @@ export const Game: FunctionComponent = () => {
     }).catch(handleError)
   }
   const [modalCard, setModalCard] = useState<null | ICard>(null)
-  const handleCardClick = (card: ICard) => {
-    if (isPmCard(card)) {
-      if (cardPoints[card.number] + state.points <= 99) {
-        setModalCard(card)
+  const [{resolve, reject}, makePromise] = usePromise<void>()
+  const handleCardClick = async (card: ICard) => {
+    try{
+      if (isPmCard(card)) {
+        if (cardPoints[card.number] + state.points <= 99) {
+          setModalCard(card)
+          await makePromise()
+        } else {
+          await playCard({
+            card,
+            increase: false
+          })
+        }
+      } else if (isTargetCard(card)) {
+        if (targets.length === 1) {
+          await playCard({
+            card,
+            target: targets[0][0]
+          })
+        } else {
+          setModalCard(card)
+          await makePromise()
+        }
       } else {
-        playCard({
-          card,
-          increase: false
-        }).catch(handleError)
+        await playCard({ card })
       }
-    } else if (isTargetCard(card)) {
-      if (targets.length === 1) {
-        playCard({
-          card,
-          target: targets[0][0]
-        }).catch(handleError)
-      } else {
-        setModalCard(card)
-      }
-    } else {
-      playCard({ card }).catch(handleError)
+    }catch (e) {
+      handleError(e)
+      throw e
     }
   }
 
   const handleModalClose = (payload?: PlayCardPayload) => {
     if (payload !== undefined) {
-      playCard(payload).catch(handleError)
+      playCard(payload).then(resolve).catch(handleError).catch(reject)
+    }else{
+      reject?.(new Error('the operation is cancelled'))
     }
     setModalCard(null)
   }
