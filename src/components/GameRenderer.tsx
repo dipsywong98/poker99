@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { usePoker99 } from '../withPoker99Network'
-import { PlayCardPayload } from '../Poker99Action'
+import { PlayCardPayload, Poker99ActionType } from '../Poker99Action'
 import { Card } from './Card'
+import { Autorenew, Bomb } from 'mdi-material-ui'
+import { Loop } from '@material-ui/icons'
 
 export const GameRenderer = () => {
-  const { state, myPlayerId } = usePoker99()
+  const { state, myPlayerId,dispatch } = usePoker99()
   const [prevCardPayload, setPrevCardPayload] = useState<undefined | (PlayCardPayload & { playerId: number })>(undefined)
   const [startAnimateCard, setStartAnimateCard] = useState(false)
   const [showAnimateCard, setShowAnimateCard] = useState(false)
@@ -20,31 +22,70 @@ export const GameRenderer = () => {
     }, 300)
   }, [state.lastAction])
   const m4 = (id: number): number => id % 4
-  const origins: Array<{ bottom?: string, left?: string, top?: string, right?: string }> = [{
+  const origins: Array<Record<string, string>> = [{
     top: '100%',
-    left: '50%'
+    left: '50%',
+    bottom: '0',
+    right: '50%'
   }, {
     left: '0',
-    top: '50%'
+    top: '50%',
+    right: '100%',
+    bottom: '50%'
   }, {
     top: '0',
-    left: '50%'
+    left: '50%',
+    bottom: '100%',
+    right: '50%'
   }, {
     left: '100%',
-    top: '50%'
+    top: '50%',
+    bottom: '50%',
+    right: '0'
   }]
   const center = {
     top: '50%', left: '50%', right: '50%', bottom: '50%'
   }
+  const Name = useCallback(({ offset }) => {
+    const style = [
+      undefined,
+      {
+        left: '40px',
+        top: '50%'
+      }, {
+        top: 0,
+        left: '50%',
+        transform: 'translateX(-50%)'
+      }, {
+        right: '40px',
+        top: '50%'
+      }]
+    const playerId = m4(myPlayerId + offset)
+    const isHisTurn = state.turn === playerId
+    return <h1
+      style={{
+        textDecorationLine: state.dead[playerId] ? 'line-through' : undefined,
+        position: 'absolute',
+        color: isHisTurn ? 'red' : 'white',
+        ...style[offset]
+      }}>{state.players[playerId]}{isHisTurn ? ' ←' : ''}</h1>
+  }, [myPlayerId, state.dead, state.players, state.turn])
+  const again = async (): Promise<void> => {
+    await dispatch({
+      type: Poker99ActionType.END
+    }).catch(console.error)
+  }
   return (
-    <div style={{ backgroundColor: 'green', position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
-         onClick={window.alert}>
-      {[1, 2, 3].map(d => <div
-        key={d}
-        style={{ position: 'absolute', ...origins[d] }}>{state.players[m4(myPlayerId + d)]}</div>)}
+    <div style={{ backgroundColor: 'green', position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, color: 'white' }}>
+      <Name offset={1}/>
+      <Name offset={2}/>
+      <Name offset={3}/>
+      <h1 style={{ position: 'absolute', left: '50%', top: 'calc(50% - 192px)', transform: 'translateX(-50%)' }}>
+        <Bomb/>: {state.points}/99
+      </h1>
       {prevCardPayload !== undefined &&
       <div style={{ position: 'absolute', ...center }}>
-        <div style={{ transform: 'translate(-50%,-50%)', width: '110px', height: '192px' }}>
+        <div style={{ transform: 'translate(-50%,-50%)', width: '142px', height: '192px' }}>
           <Card card={prevCardPayload.card} disabled/>
         </div>
       </div>}
@@ -54,11 +95,29 @@ export const GameRenderer = () => {
         transform: state.lastAction !== prevCardPayload ? 'translate(-50%,-50%)' : undefined,
         transition: ['top', 'bottom', 'left', 'right'].map(s => `${s} 0.2s ease-in-out`).join(',')
       }}>
-        <div style={{ transform: 'translate(-50%,-50%)', width: '110px', height: '192px' }}>
+        <div style={{ transform: 'translate(-50%,-50%)', width: '142px', height: '192px' }}>
           <Card card={state.lastAction.card} disabled/>
         </div>
       </div>}
-
+      <h3 style={{
+        position: 'absolute',
+        left: '50%',
+        bottom: 'calc(50% - 192px - 4em)',
+        transform: 'translateX(-50%)',
+        textAlign: 'center'
+      }}>
+        {!state.dead[myPlayerId] && <h1 style={{ color: state.turn === myPlayerId ? 'red' : 'white' }}>
+          {state.turn === myPlayerId ? 'My Turn' : `${state.players[state.turn]}'s turn`}
+        </h1>}
+        {state.dead[myPlayerId] && <h1 style={{ color: 'red'}}>You Died</h1>}
+        {state.winner !== undefined && state.winner !== null && <div>winner is {state.players[state.winner]}
+          <button onClick={again}>again</button>
+        </div>}
+        <div>
+          Direction: {state.direction === 1 ? <Autorenew fontSize='large'/> : <Loop fontSize='large'/>}
+        </div>
+      </h3>
+      <h3 style={{ position: 'absolute', bottom: 0, right: '20px' }}>Draw Deck: {state.drawDeck.length}</h3>
     </div>
   )
 }

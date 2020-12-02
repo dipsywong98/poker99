@@ -103,6 +103,10 @@ export const withEndTurn: IStateMapper = prevState => {
   }
 }
 
+export const withLog: (log: string)=> IStateMapper = log => prevState => {
+  return {...prevState, logs: [...prevState.logs, log]}
+}
+
 export const Poker99Reducer: NetworkReducer<Poker99State, Poker99Action> = (prevState, action) => {
   const peerId = action.peerId
   if (peerId === undefined) {

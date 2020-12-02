@@ -18,14 +18,10 @@ export const Game: FunctionComponent = () => {
     myLocals,
     hideDeck,
     setHideDeck,
-    error,
     setError,
     renderedDeckId
   } = usePoker99()
-  const [target, setTarget] = useState(0)
-  const [increment, setIncrement] = useState(true)
   const [throttledRenderedId, setTrottledRenderedId] = useState(renderedDeckId)
-  const d = state.direction === 1 ? '>' : '<'
   const handleError = (e: Error): void => {
     setError(e.message)
   }
@@ -57,9 +53,9 @@ export const Game: FunctionComponent = () => {
     }).catch(handleError)
   }
   const [modalCard, setModalCard] = useState<null | ICard>(null)
-  const [{resolve, reject}, makePromise] = usePromise<void>()
+  const [{ resolve, reject }, makePromise] = usePromise<void>()
   const handleCardClick = async (card: ICard) => {
-    try{
+    try {
       if (isPmCard(card)) {
         if (cardPoints[card.number] + state.points <= 99) {
           setModalCard(card)
@@ -83,7 +79,7 @@ export const Game: FunctionComponent = () => {
       } else {
         await playCard({ card })
       }
-    }catch (e) {
+    } catch (e) {
       handleError(e)
       throw e
     }
@@ -92,7 +88,7 @@ export const Game: FunctionComponent = () => {
   const handleModalClose = (payload?: PlayCardPayload) => {
     if (payload !== undefined) {
       playCard(payload).then(resolve).catch(handleError).catch(reject)
-    }else{
+    } else {
       reject?.(new Error('the operation is cancelled'))
     }
     setModalCard(null)
@@ -100,41 +96,17 @@ export const Game: FunctionComponent = () => {
 
   return (
     <div style={{ pointerEvents: 'all' }}>
-      <div>
-        <h3>{state.points}</h3>
-        <h6>{state.players[state.turn]}{'\''}s turn</h6>
-        {error !== '' && <div style={{ color: 'red' }}>{error}</div>}
+      {state.started &&
+      <Deck
+        cards={state.playerDeck[throttledRenderedId ?? myPlayerId]}
+        onCardClick={handleCardClick}
+        hide={hideDeck}
+        reveal={() => setHideDeck(false)}
+      />}
+      <div style={{ maxHeight: '50%' }}>
         {state.winner !== undefined && state.winner !== null && <div>winner is {state.players[state.winner]}
           <button onClick={again}>again</button>
         </div>}
-        {state.players.map((name, id) => (
-          <span
-            key={name}
-            onClick={() => setTarget(id)}
-            style={{
-              fontWeight: state.turn === id ? 'bold' : 'normal',
-              textDecorationLine: state.dead[id] ? 'line-through' : 'none'
-            }}>
-          {name} {d}
-        </span>
-        ))}
-        <div>
-          {state.started &&
-          <Deck
-            cards={state.playerDeck[throttledRenderedId ?? myPlayerId]}
-            onCardClick={handleCardClick}
-            hide={hideDeck}
-            reveal={() => setHideDeck(false)}
-          />}
-        </div>
-        <div>
-          target: {target}
-        </div>
-        <button onClick={() => setIncrement(!increment)}>
-          {increment ? '+' : '-'}
-        </button>
-      </div>
-      <div>
         {state.logs.slice().reverse().map((s, k) => <div key={k}>{s}</div>)}
       </div>
       <PlayCardAdditionalModal
