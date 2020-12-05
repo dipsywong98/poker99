@@ -93,10 +93,9 @@ export const Game: FunctionComponent = () => {
     }
     setModalCard(null)
   }
-
   return (
     <div style={{ pointerEvents: 'all' }}>
-      {state.started &&
+      {state.started && myPlayerId !== undefined &&
       <Deck
         cards={state.playerDeck[throttledRenderedId ?? myPlayerId]}
         onCardClick={handleCardClick}

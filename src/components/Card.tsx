@@ -20,11 +20,11 @@ const useStyle = makeStyles(() => ({
   }
 }))
 
-export const Card: FunctionComponent<{ card: ICard, onClick?: () => void, disabled?: boolean }> = ({ card, card: { suit, number }, onClick, disabled }) => {
+export const Card: FunctionComponent<{ card: ICard, onClick?: () => void, disabled?: boolean, style?: Record<string, string> }> = ({ style, card, card: { suit, number }, onClick, disabled }) => {
   const classes = useStyle()
 
   return (
-    <Paper elevation={4} style={{color: suitColor[suit], pointerEvents: disabled ? 'none' : 'auto'}} className={classes.root} onClick={!disabled ? onClick : undefined}>
+    <Paper elevation={4} style={{color: suitColor[suit], pointerEvents: disabled ? 'none' : 'auto', ...style}} className={classes.root} onClick={!disabled ? onClick : undefined}>
       <h2 style={{fontFamily: 'Big Shoulders Inline Text, inherit', margin: 0}}>
         <div>
           {numberString[number]}

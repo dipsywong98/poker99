@@ -15,5 +15,5 @@ export class Poker99State extends GenericBoardGameState {
   trashDeck: IDeck = []
   playerDeck: IDeck[] = []
   logs: string[] = []
-  lastAction?: PlayCardPayload & { playerId: number }
+  lastAction: PlayCardPayload & { playerId: number } | null = null
 }

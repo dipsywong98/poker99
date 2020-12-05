@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react'
+import React, { FunctionComponent, ReactNode, useEffect, useState } from 'react'
 import { ICard } from '../types'
 import { Card } from './Card'
 import { Grid, IconButton } from '@material-ui/core'
@@ -46,6 +46,23 @@ export const Deck: FunctionComponent<{ cards: ICard[], hide: boolean, reveal: ()
       })
       .catch(e => console.error(e.message))
   }
+  const [hovering, setHovering] = useState<number | null>(null)
+  const withMaxWidth = (children: ReactNode, index: number) => (
+    <div
+      style={{
+        padding: '8px',
+        maxWidth: hovering === null
+          ? 'calc(100% / 6)'
+          : hovering === index ? '142px' : 'calc((100% - 142px) / 5)',
+        transition: 'max-width 0.1s ease-in-out'
+      }}
+      onMouseEnter={() => setHovering(index)}
+      onTouchStart={() => setHovering(index)}
+      onMouseLeave={() => setHovering(null)}
+      onTouchEnd={() => setHovering(null)}>
+      {children}
+    </div>
+  )
   return <div style={{
     position: 'fixed',
     bottom: 0,
@@ -62,18 +79,20 @@ export const Deck: FunctionComponent<{ cards: ICard[], hide: boolean, reveal: ()
       display: 'block',
       pointerEvents: 'all'
     }}><Visibility/></IconButton>}
-    <Grid container justify='center' spacing={2}>
+    <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'nowrap' }}>
       {cards.map((card, index) => (
         <>
-          {index === playedIndex && <PlaceHolder/>}
+          {index === playedIndex &&
+          withMaxWidth(<PlaceHolder/>, index)
+          }
           {playedIndex !== -1 && index === 4
-            ? <PlaceHolder reverse={true} card={card}/>
-            : <Grid item key={card.number * 10 + card.suit}>
+            ? withMaxWidth(<PlaceHolder reverse={true} card={card}/>, index)
+            : withMaxWidth(<Grid item key={card.number * 10 + card.suit}>
               <Card card={card} onClick={() => handleCardClick(card, index)} disabled={hide}/>
-            </Grid>
+            </Grid>, index)
           }
         </>
       ))}
-    </Grid>
+    </div>
   </div>
 }
