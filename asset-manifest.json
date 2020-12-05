@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/poker99/static/css/main.b9ae91f8.chunk.css",
-    "main.js": "/poker99/static/js/main.93ab25fb.chunk.js",
-    "main.js.map": "/poker99/static/js/main.93ab25fb.chunk.js.map",
+    "main.js": "/poker99/static/js/main.a553cf79.chunk.js",
+    "main.js.map": "/poker99/static/js/main.a553cf79.chunk.js.map",
     "runtime-main.js": "/poker99/static/js/runtime-main.dedd1448.js",
     "runtime-main.js.map": "/poker99/static/js/runtime-main.dedd1448.js.map",
     "static/js/2.8bfcadd0.chunk.js": "/poker99/static/js/2.8bfcadd0.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.dedd1448.js",
     "static/js/2.8bfcadd0.chunk.js",
     "static/css/main.b9ae91f8.chunk.css",
-    "static/js/main.93ab25fb.chunk.js"
+    "static/js/main.a553cf79.chunk.js"
   ]
 }
