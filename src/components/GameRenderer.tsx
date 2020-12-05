@@ -109,7 +109,7 @@ export const GameRenderer = () => {
             <Card card={state.lastAction.card} disabled/>
           </div>
         </div>}
-        <h3 style={{
+        <div style={{
           position: 'absolute',
           left: '50%',
           bottom: 'calc(50% - 192px - 4em)',
@@ -126,7 +126,7 @@ export const GameRenderer = () => {
           <div>
             Direction: {state.direction === 1 ? <Autorenew fontSize='large'/> : <Loop fontSize='large'/>}
           </div>
-        </h3>
+        </div>
         <h3 style={{ position: 'absolute', bottom: 0, right: '20px' }}>Draw Deck: {state.drawDeck.length}</h3>
       </div>
   )

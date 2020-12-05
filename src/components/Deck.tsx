@@ -25,7 +25,7 @@ const PlaceHolder: FunctionComponent<{ reverse?: boolean, card?: ICard }> = ({ r
         transition: 'transform 0.3s ease-in-out',
         position: 'absolute',
         top: 0,
-        right: 0,
+        left: 0,
         margin: '8px'
       }}>
         <Card card={card} disabled/>
@@ -47,10 +47,10 @@ export const Deck: FunctionComponent<{ cards: ICard[], hide: boolean, reveal: ()
       .catch(e => console.error(e.message))
   }
   const [hovering, setHovering] = useState<number | null>(null)
-  const withMaxWidth = (children: ReactNode, index: number) => (
+  const withMaxWidth = (children: ReactNode, index: number, noPad = false) => (
     <div
       style={{
-        padding: '8px',
+        padding: noPad ? 0 : '8px',
         maxWidth: hovering === null
           ? 'calc(100% / 6)'
           : hovering === index ? '142px' : 'calc((100% - 142px) / 5)',
@@ -83,12 +83,12 @@ export const Deck: FunctionComponent<{ cards: ICard[], hide: boolean, reveal: ()
       {cards.map((card, index) => (
         <>
           {index === playedIndex &&
-          withMaxWidth(<PlaceHolder/>, index)
+          withMaxWidth(<PlaceHolder/>, index, true)
           }
           {playedIndex !== -1 && index === 4
-            ? withMaxWidth(<PlaceHolder reverse={true} card={card}/>, index)
+            ? withMaxWidth(<PlaceHolder reverse={true} card={card}/>, index, true)
             : withMaxWidth(<Grid item key={card.number * 10 + card.suit}>
-              <Card card={card} onClick={() => handleCardClick(card, index)} disabled={hide}/>
+              <Card card={card} onClick={() => handleCardClick(card, index)} disabled={hide} style={{transform: hovering === index ? 'translateY(-50%)' : undefined}}/>
             </Grid>, index)
           }
         </>
