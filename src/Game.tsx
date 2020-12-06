@@ -8,6 +8,7 @@ import { PlayCardAdditionalModal } from './components/PlayCardAdditionalModal'
 import { cardPoints } from './constants'
 import { isTargetCard } from './cards/target'
 import { usePromise } from './usePromise'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core'
 
 export const Game: FunctionComponent = () => {
   const {
@@ -18,6 +19,7 @@ export const Game: FunctionComponent = () => {
     myLocals,
     hideDeck,
     setHideDeck,
+    error,
     setError,
     renderedDeckId
   } = usePoker99()
@@ -114,6 +116,19 @@ export const Game: FunctionComponent = () => {
         onClose={handleModalClose}
         targets={targets}
       />
+      <Dialog open={error !== ''} onClose={() => setError('')} aria-labelledby="form-dialog-title">
+        <DialogTitle>Error</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {error}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setError('')} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }
