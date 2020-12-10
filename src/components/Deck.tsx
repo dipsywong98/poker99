@@ -36,17 +36,18 @@ const PlaceHolder: FunctionComponent<{ reverse?: boolean, card?: ICard }> = ({ r
 
 export const Deck: FunctionComponent<{ cards: ICard[], hide: boolean, reveal: () => void, onCardClick: (card: ICard) => Promise<void> }> = ({ cards, onCardClick, hide, reveal }) => {
   const [playedIndex, setPlayedIndex] = useState(-1)
+  const [hovering, setHovering] = useState<number | null>(null)
   const handleCardClick = async (card: ICard, index: number) => {
     onCardClick(card)
       .then(() => {
+        setHovering(null)
         setPlayedIndex(index)
         setTimeout(() => {
           setPlayedIndex(-1)
-        }, 1000)
+        }, 500)
       })
       .catch(e => console.error(e.message))
   }
-  const [hovering, setHovering] = useState<number | null>(null)
   const withMaxWidth = (children: ReactNode, index: number, noPad = false) => (
     <div
       style={{
