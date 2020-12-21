@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/poker99/static/css/main.b9ae91f8.chunk.css",
-    "main.js": "/poker99/static/js/main.0afa8a70.chunk.js",
-    "main.js.map": "/poker99/static/js/main.0afa8a70.chunk.js.map",
-    "runtime-main.js": "/poker99/static/js/runtime-main.85068d32.js",
-    "runtime-main.js.map": "/poker99/static/js/runtime-main.85068d32.js.map",
-    "static/js/2.5330fb86.chunk.js": "/poker99/static/js/2.5330fb86.chunk.js",
-    "static/js/2.5330fb86.chunk.js.map": "/poker99/static/js/2.5330fb86.chunk.js.map",
-    "static/js/3.7f6dd580.chunk.js": "/poker99/static/js/3.7f6dd580.chunk.js",
-    "static/js/3.7f6dd580.chunk.js.map": "/poker99/static/js/3.7f6dd580.chunk.js.map",
+    "main.js": "/poker99/static/js/main.b403bcb1.chunk.js",
+    "main.js.map": "/poker99/static/js/main.b403bcb1.chunk.js.map",
+    "runtime-main.js": "/poker99/static/js/runtime-main.dea99eb5.js",
+    "runtime-main.js.map": "/poker99/static/js/runtime-main.dea99eb5.js.map",
+    "static/js/2.7a92480d.chunk.js": "/poker99/static/js/2.7a92480d.chunk.js",
+    "static/js/2.7a92480d.chunk.js.map": "/poker99/static/js/2.7a92480d.chunk.js.map",
+    "static/js/3.902fa814.chunk.js": "/poker99/static/js/3.902fa814.chunk.js",
+    "static/js/3.902fa814.chunk.js.map": "/poker99/static/js/3.902fa814.chunk.js.map",
     "index.html": "/poker99/index.html",
     "static/css/main.b9ae91f8.chunk.css.map": "/poker99/static/css/main.b9ae91f8.chunk.css.map",
-    "static/js/2.5330fb86.chunk.js.LICENSE.txt": "/poker99/static/js/2.5330fb86.chunk.js.LICENSE.txt"
+    "static/js/2.7a92480d.chunk.js.LICENSE.txt": "/poker99/static/js/2.7a92480d.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.85068d32.js",
-    "static/js/2.5330fb86.chunk.js",
+    "static/js/runtime-main.dea99eb5.js",
+    "static/js/2.7a92480d.chunk.js",
     "static/css/main.b9ae91f8.chunk.css",
-    "static/js/main.0afa8a70.chunk.js"
+    "static/js/main.b403bcb1.chunk.js"
   ]
 }
