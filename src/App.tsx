@@ -5,8 +5,9 @@ import { Game } from './Game'
 import { GameRenderer } from './components/GameRenderer'
 import { i18ns } from './i18ns'
 import { DialogContent } from '@material-ui/core'
+import { withLobby } from 'gamenet'
 
-const App: FunctionComponent = withGamenetI18n({ i18ns })(withPoker99Network(() => {
+const App: FunctionComponent = withLobby(withGamenetI18n({ i18ns })(withPoker99Network(() => {
   const network = usePoker99()
   const { i18n } = useGamenetI18n()
   return (
@@ -24,6 +25,6 @@ const App: FunctionComponent = withGamenetI18n({ i18ns })(withPoker99Network(() 
       </div>
     </GamePagesSlider>
   )
-}))
+})))
 
 export default App
