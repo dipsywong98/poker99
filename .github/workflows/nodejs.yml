@@ -1,0 +1,41 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: gh-pages
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: yarn install --frozen-lockfile
+    - run: yarn build
+      env:
+        REACT_APP_PEER_HOST: ${{secrets.REACT_APP_PEER_HOST}}
+        REACT_APP_PEER_PORT: 443
+        REACT_APP_PEER_PATH: /
+        REACT_APP_PEER_SECURE: true
+        REACT_APP_PEER_CONFIG: ${{secrets.REACT_APP_PEER_CONFIG}}
+        REACT_APP_SMNET_VERBOSE_ALL_NO_HISTORY: true
+    - uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build
+      env:
+        CI: true
