@@ -48,6 +48,9 @@ export const Game: FunctionComponent = () => {
       setTrottledRenderedId(renderedDeckId)
     }, 500)
   }, [renderedDeckId])
+  useEffect(() => {
+    setTrottledRenderedId(myPlayerId)
+  }, [myPlayerId])
   const targets: Array<[number, string]> = state.players.map((name, id) => [id, name] as [number, string]).filter(([id]) => id !== throttledRenderedId && !state.dead[id])
   const again = async (): Promise<void> => {
     await dispatch({
